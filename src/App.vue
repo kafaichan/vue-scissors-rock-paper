@@ -1,5 +1,11 @@
 <template>
   <div id="app">
+      <header>
+        You: {{userWinCount}}, Computer: {{botWinCount}}, Total Rounds: {{totalCount}}
+        <button @click="() => reset()"
+        v-if="userWinCount==2 || botWinCount==2 || totalCount==3">Reset</button>
+      </header>
+
       <div id="bot-placeholder">
         <img :src="bot_image" />        
       </div>
@@ -20,7 +26,10 @@ export default {
   data() {
     return {
       botChoice: 0,
-      userChoice: 0
+      userChoice: 0,
+      userWinCount: 0,
+      botWinCount: 0,
+      totalCount: 0
     }
   },
   computed: {
@@ -68,6 +77,7 @@ export default {
       {
         this.userChoice = user_pick * 10;
         this.botChoice = bot_pick * -10;
+        this.userWinCount += 1;
       }
       else if((user_pick==1 && bot_pick==2) || 
         (user_pick==2 && bot_pick == 3) || 
@@ -75,7 +85,16 @@ export default {
       {
         this.userChoice = user_pick * -10;
         this.botChoice = bot_pick * 10;
-      }      
+        this.botWinCount += 1;
+      }
+      this.totalCount += 1;   
+    },
+    reset() {
+      this.botChoice = 0;
+      this.userChoice = 0;
+      this.userWinCount = 0;
+      this.botWinCount = 0;
+      this.totalCount = 0;
     }
   }
 }
@@ -88,7 +107,6 @@ export default {
   width: 100%;
   height: 100%;
   background-color: #44D7B6;
-  padding-top: 40px;
   box-sizing: border-box;
 }
 
@@ -132,4 +150,22 @@ export default {
 #btn-rock {
   background-image: url("/images/rock-btn.png");
 }
+
+header {
+  background-color: #000;
+  color: #fff;
+  padding: .5em;
+  margin-bottom: 1em;
+}
+
+button {
+  float: right;
+  background-color: #ff7d7d;
+  color: #fff;
+  border: none;
+  display: block;
+  padding: 0.4em;
+  border-radius: 2px;
+}
+
 </style>
